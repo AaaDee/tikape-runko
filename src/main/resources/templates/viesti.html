@@ -1,0 +1,44 @@
+
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title th:text="${avaus.otsikko}">Alue</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1 th:text="${avaus.otsikko}">Alue</h1>
+
+
+
+        <table>
+            <tr>
+                <th>Viesti</th>
+                <th>Kirjoittaja</th>
+                <th>Päiväys</th>
+            </tr>
+            <tr th:each="viesti: ${viestit}">
+                <td th:text="${viesti.viesti}">otsikko</td>
+                <td th:text="${viesti.kirjoittaja}">viesteja</td>
+                <td th:text="${viesti.paivays}">viimeisin</td>
+            </tr>
+        </table>
+        <p>
+            <a  th:href="${'/alue/' + alue.id + '/avaus/' + avaus.id + '?page=' + edellinen}">Edellinen</a>
+            <a  th:href="${'/alue/' + alue.id + '/avaus/' + avaus.id + '?page=' + seuraava}">Seuraava</a>
+        </p>
+        <p>
+            <a  th:href="${'/' + 'alue/' + alue.id}">Palaa keskustelunavauksiin</a>
+        </p>
+     
+        <h2>Vastaa</h2>
+        <form method="POST" >
+            Nimimerkki: <input type="text" name="nimimerkki"/> <br></br>
+            Vastaus: <textarea name="viesti"></textarea> <br></br>
+            <input type="submit" value="lähetä"/>
+        </form>
+
+
+    </body>
+</html>

@@ -17,7 +17,12 @@ public class Database {
     }
 
     public void init() {
-        List<String> lauseet = sqliteLauseet();
+        List<String> lauseet = null;
+        if (this.databaseAddress.contains("postgres")) {
+            lauseet = postgreLauseet();
+        } else {
+            lauseet = sqliteLauseet();
+        }
 
         // "try with resources" sulkee resurssin automaattisesti lopuksi
         try (Connection conn = getConnection()) {
@@ -37,13 +42,48 @@ public class Database {
 
     private List<String> sqliteLauseet() {
         ArrayList<String> lista = new ArrayList<>();
-
-        // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("CREATE TABLE Opiskelija (id integer PRIMARY KEY, nimi varchar(255));");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Platon');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Aristoteles');");
-        lista.add("INSERT INTO Opiskelija (nimi) VALUES ('Homeros');");
-
+        lista.add("CREATE TABLE Aihealue "
+                + "(id integer PRIMARY KEY, "
+                + "nimi varchar(200) "
+                + ");");
+        lista.add("CREATE TABLE Keskustelunavaus (\n"
+                + "id integer PRIMARY KEY,\n"
+                + "otsikko varchar(200),\n"
+                + "alue integer,\n"
+                + "FOREIGN KEY(alue) REFERENCES Aihealue(id)\n"
+                + ");");
+        lista.add("CREATE TABLE Viesti (\n"
+                + "id integer PRIMARY KEY,\n"
+                + "kirjoittaja varchar(200),\n"
+                + "sisalto varchar(10000),\n"
+                + "paivays timestamp,\n"
+                + "avaus integer,\n"
+                + "FOREIGN KEY(avaus) REFERENCES Keskustelunavaus(id)\n"
+                + ");");
         return lista;
+    }
+
+    private List<String> postgreLauseet() {
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add("CREATE TABLE Aihealue "
+                + "(id serial PRIMARY KEY, "
+                + "nimi varchar(200) "
+                + ");");
+        lista.add("CREATE TABLE Keskustelunavaus (\n"
+                + "id serial PRIMARY KEY,\n"
+                + "otsikko varchar(200),\n"
+                + "alue integer,\n"
+                + "FOREIGN KEY(alue) REFERENCES Aihealue(id)\n"
+                + ");");
+        lista.add("CREATE TABLE Viesti (\n"
+                + "id serial PRIMARY KEY,\n"
+                + "kirjoittaja varchar(200),\n"
+                + "sisalto varchar(10000),\n"
+                + "paivays timestamp,\n"
+                + "avaus integer,\n"
+                + "FOREIGN KEY(avaus) REFERENCES Keskustelunavaus(id)\n"
+                + ");");
+        return lista;
+
     }
 }

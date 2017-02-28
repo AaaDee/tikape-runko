@@ -1,0 +1,46 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title th:text="${aihealue.otsikko}">Alue</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1 th:text="${aihealue.otsikko}">Alue</h1>
+
+
+
+
+        <table>
+            <tr>
+                <th>Otsikko</th>
+                <th>Viestejä yhteensä</th>
+                <th>Viimeisin viesti</th>
+            </tr>
+            <tr th:each="avaus: ${avaukset}">
+                <td><a th:href="${'/alue/' + aihealue.id + '/avaus/' + avaus.id +'?page=1'}" th:text="${avaus.otsikko}">otsikko</a></td>
+                <td th:text="${avaus.viesteja}">viesteja</td>
+                <td th:text="${avaus.uusinViesti}">viimeisin</td>
+            </tr>
+        </table>
+        <p>
+            <a  th:href="${'/alue/' + aihealue.id + '?page=' + edellinen }">Edellinen</a>
+            <a  th:href="${'/alue/' + aihealue.id + '?page=' + seuraava }">Seuraava</a>
+        </p>
+        
+        <p>
+            <a  th:href="${'/'}">Palaa pääsivulle</a>
+        </p>
+        
+        <h2>Lisää uusi avaus</h2>
+        <form method="POST" >
+            Nimimerkki: <input type="text" name="nimimerkki"/> <br></br>
+            Otsikko:    <input type="text"  name="otsikko"/> <br></br>
+            Viesti: <textarea name="viesti"></textarea> <br></br>
+            <input type="submit" value="lisää"/>
+        </form>
+
+
+    </body>
+</html>
