@@ -22,6 +22,7 @@ public class AihealueDao implements Dao<Aihealue, Integer> {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Aihealue WHERE id = ?");
         stmt.setInt(1, key);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         Integer id = rs.getInt("id");
         String otsikko = rs.getString("nimi");
         String viimeisin = "";
