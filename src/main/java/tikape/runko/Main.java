@@ -52,6 +52,9 @@ public class Main {
             int sivu = 1;
             if (req.queryParams("page") != null) {
                 sivu = Integer.parseInt(req.queryParams("page"));
+                if (sivu < 1){
+                    sivu = 1;
+                }
             }
             map.put("avaukset", avausDao.listaaAvaukset(alue, sivu));
             map.put("aihealue", aihealueDao.findOne(alue));
@@ -100,6 +103,9 @@ public class Main {
             int sivu = 1;
             if (req.queryParams("page") != null) {
                 sivu = Integer.parseInt(req.queryParams("page"));
+                if (sivu < 1){
+                    sivu = 1;
+                }
             }
             map.put("avaus", avausDao.findOne(avaus));
             map.put("viestit", viestiDao.avauksenViestit(avaus, sivu));

@@ -62,7 +62,10 @@ public class AvausDao implements Dao<Avaus,Integer>{
         
         //tässä kysely missä haetaan maxid, jotta tiedetään että mihin seuraavassa viitataan
         PreparedStatement stmt2 = connection.prepareStatement("SELECT MAX(id) as id FROM Keskustelunavaus");
-        int id = Integer.parseInt(stmt2.executeQuery().getString("id"));
+         ResultSet rs2 = stmt2.executeQuery();
+         rs2.next();
+        int id = rs2.getInt("id");
+        System.out.println(id);
         stmt2.close();
         
                 //tässä jatkuu
@@ -87,6 +90,7 @@ public class AvausDao implements Dao<Avaus,Integer>{
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Keskustelunavaus WHERE id = ?");
         stmt.setInt(1, key);
         ResultSet rs = stmt.executeQuery();
+        rs.next();
         Integer id = rs.getInt("id");
         String otsikko = rs.getString("otsikko");
         String viimeisin = "";
