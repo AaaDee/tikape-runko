@@ -14,7 +14,7 @@ public class Database {
     }
 
     public Connection getConnection() throws SQLException {
-        
+
         if (this.databaseAddress.contains("postgres")) {
             try {
                 URI dbUri = new URI(databaseAddress);
@@ -32,7 +32,6 @@ public class Database {
 
         return DriverManager.getConnection(databaseAddress);
     }
-    
 
     public void init() {
         List<String> lauseet = null;
@@ -78,6 +77,7 @@ public class Database {
                 + "avaus integer,\n"
                 + "FOREIGN KEY(avaus) REFERENCES Keskustelunavaus(id)\n"
                 + ");");
+        lista.addAll(malliData());
         return lista;
     }
 
@@ -101,7 +101,37 @@ public class Database {
                 + "avaus integer,\n"
                 + "FOREIGN KEY(avaus) REFERENCES Keskustelunavaus(id)\n"
                 + ");");
+        lista.addAll(malliData());
         return lista;
+    }
 
+    //mallidatan lisääminen tietokantaan
+    private List<String> malliData() {
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add("INSERT Into Aihealue(nimi) VALUES ('kissat');");
+        lista.add("INSERT Into Aihealue(nimi) VALUES ('koirat');");
+        lista.add("INSERT Into Aihealue(nimi) VALUES ('autot');");
+        
+        lista.add("INSERT INTO Keskustelunavaus(Otsikko, Alue) VALUES"
+                + " ('Kissat on parempia kuin koirat',1);");
+        lista.add("INSERT INTO Keskustelunavaus(Otsikko, Alue) VALUES"
+                + " ('Lada on paras',3);");
+        lista.add("INSERT INTO Keskustelunavaus(Otsikko, Alue) VALUES"
+                + " ('Skoda on paras',3);");
+        
+        lista.add("Insert into Viesti"
+                + " (kirjoittaja, sisalto, paivays, avaus) Values "
+                + "('Bauerin Jaska', 'Näin on tosi!', current_timestamp,1);");
+        lista.add("Insert into Viesti"
+                + " (kirjoittaja, sisalto, paivays, avaus) Values "
+                + "('Bauerin Jaska', 'Sanoisinpa, että Lada on maailman paras auto', current_timestamp,2);");
+        lista.add("Insert into Viesti"
+                + " (kirjoittaja, sisalto, paivays, avaus) Values "
+                + "('Arska vaan', 'ei varmasti ole', current_timestamp,2);");
+        lista.add("Insert into Viesti"
+                + " (kirjoittaja, sisalto, paivays, avaus) Values "
+                + "('Arska vaan', 'LoL xD', current_timestamp,3);");
+        
+        return lista;
     }
 }
